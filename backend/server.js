@@ -3,11 +3,15 @@ import cors from 'cors';
 import helmet from 'helmet';
 import morgan from 'morgan';
 import dotenv from 'dotenv';
+import path from 'path';
+import { fileURLToPath } from 'url';
 import { pool } from './config/database.js';
 import chamadosRouter from './routes/chamados.js';
 import usuariosRouter from './routes/usuarios.js';
 import relatoriosRouter from './routes/relatorios.js';
 import authRouter from './routes/auth.js';
+
+const __dirname = path.dirname(fileURLToPath(import.meta.url));
 
 dotenv.config();
 
@@ -27,6 +31,14 @@ app.use(morgan('combined'));
 // Middleware de parsing
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
+
+// Servir arquivos estáticos do frontend
+app.use(express.static(path.join(__dirname, '../')));
+
+// Rota para servir index.html na raiz
+app.get('/', (req, res) => {
+  res.sendFile(path.join(__dirname, '../index.html'));
+});
 
 // Rotas
 app.use('/api/auth', authRouter);

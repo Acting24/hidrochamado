@@ -1,6 +1,4 @@
-// API Service - Integração com Backend
-
-const API_URL = process.env.API_URL || 'http://localhost:3000/api';
+const API_URL = 'http://localhost:3000/api';
 
 class APIService {
   constructor() {
@@ -33,15 +31,21 @@ class APIService {
     if (!response.ok) {
       if (response.status === 401) {
         this.clearToken();
-        window.location.href = '/index.html';
+        window.location.reload();
       }
-      const error = await response.json();
-      throw new Error(error.error || 'Erro na requisição');
+
+      let message = 'Erro na requisição';
+      try {
+        const err = await response.json();
+        message = err.error || err.message || message;
+      } catch (_) {}
+      throw new Error(message);
     }
-    return response.json();
+
+    const text = await response.text();
+    return text ? JSON.parse(text) : null;
   }
 
-  // ===== AUTENTICAÇÃO =====
   async login(email, senha) {
     const response = await fetch(`${API_URL}/auth/login`, {
       method: 'POST',
@@ -54,32 +58,21 @@ class APIService {
     return data.usuario;
   }
 
-  async registrar(nome, email, senha, funcao) {
-    const response = await fetch(`${API_URL}/auth/registrar`, {
-      method: 'POST',
-      headers: this.getHeaders(),
-      body: JSON.stringify({ nome, email, senha, funcao })
-    });
-
-    return this.handleResponse(response);
-  }
-
-  // ===== CHAMADOS =====
-  async criarChamado(dadosChamado) {
-    const response = await fetch(`${API_URL}/chamados`, {
-      method: 'POST',
-      headers: this.getHeaders(),
-      body: JSON.stringify(dadosChamado)
-    });
-
-    return this.handleResponse(response);
-  }
-
   async listarChamados(filtros = {}) {
     const params = new URLSearchParams(filtros);
     const response = await fetch(`${API_URL}/chamados?${params}`, {
       method: 'GET',
       headers: this.getHeaders()
+    });
+
+    return this.handleResponse(response);
+  }
+
+  async criarChamado(dados) {
+    const response = await fetch(`${API_URL}/chamados`, {
+      method: 'POST',
+      headers: this.getHeaders(),
+      body: JSON.stringify(dados)
     });
 
     return this.handleResponse(response);
@@ -94,17 +87,16 @@ class APIService {
     return this.handleResponse(response);
   }
 
-  async atualizarChamado(id, atualizacoes) {
+  async atualizarChamado(id, dados) {
     const response = await fetch(`${API_URL}/chamados/${id}`, {
       method: 'PUT',
       headers: this.getHeaders(),
-      body: JSON.stringify(atualizacoes)
+      body: JSON.stringify(dados)
     });
 
     return this.handleResponse(response);
   }
 
-  // ===== USUÁRIOS =====
   async obterPerfil() {
     const response = await fetch(`${API_URL}/usuarios/perfil`, {
       method: 'GET',
@@ -114,36 +106,8 @@ class APIService {
     return this.handleResponse(response);
   }
 
-  async listarAgentes() {
-    const response = await fetch(`${API_URL}/usuarios/agentes`, {
-      method: 'GET',
-      headers: this.getHeaders()
-    });
-
-    return this.handleResponse(response);
-  }
-
-  async listarUsuarios() {
-    const response = await fetch(`${API_URL}/usuarios`, {
-      method: 'GET',
-      headers: this.getHeaders()
-    });
-
-    return this.handleResponse(response);
-  }
-
-  // ===== RELATÓRIOS =====
   async obterDashboard() {
     const response = await fetch(`${API_URL}/relatorios/dashboard`, {
-      method: 'GET',
-      headers: this.getHeaders()
-    });
-
-    return this.handleResponse(response);
-  }
-
-  async obterRelatoriSLA() {
-    const response = await fetch(`${API_URL}/relatorios/sla`, {
       method: 'GET',
       headers: this.getHeaders()
     });
@@ -158,18 +122,6 @@ class APIService {
     });
 
     return this.handleResponse(response);
-  }
-
-  // ===== HEALTH CHECK =====
-  async verificarConexao() {
-    try {
-      const response = await fetch(`${API_URL}/health`, {
-        method: 'GET'
-      });
-      return response.ok;
-    } catch (error) {
-      return false;
-    }
   }
 }
 
