@@ -41,6 +41,47 @@ function bindEvents() {
   }
 
   document.getElementById('btn-logout')?.addEventListener('click', fazerLogout);
+    // ===== ViaCEP: busca automática de endereço =====
+  const cepInput = document.getElementById('ch-cep');
+  if (cepInput) {
+    cepInput.addEventListener('blur', async () => {
+      const cep = cepInput.value.trim().replace(/\D/g, ''); // remove máscara
+
+      // Limpa campos se CEP estiver vazio
+      if (!cep) {
+        document.getElementById('ch-endereco').value = '';
+        document.getElementById('ch-bairro').value = '';
+        document.getElementById('ch-city').value = '';
+        return;
+      }
+
+      // Valida formato (8 dígitos)
+      if (cep.length !== 8) {
+        showToast('CEP inválido. Digite 8 dígitos.');
+        return;
+      }
+
+      try {
+        const response = await fetch(`https://viacep.com.br/ws/${cep}/json/`);
+        const data = await response.json();
+
+        if (data.erro) {
+          showToast('CEP não encontrado.');
+          return;
+        }
+
+        // Preenche os campos ( readonly )
+        document.getElementById('ch-endereco').value = data.logradouro || '';
+        document.getElementById('ch-bairro').value = data.bairro || '';
+        document.getElementById('ch-city').value = data.localidade || '';
+
+        showToast('Endereço preenchido automaticamente.');
+      } catch (error) {
+        console.error('Erro ao buscar CEP:', error);
+        showToast('Erro ao buscar CEP. Verifique sua conexão.');
+      }
+    });
+  }
 
   document.querySelectorAll('.nav-item').forEach((button) => {
     button.addEventListener('click', () => {
