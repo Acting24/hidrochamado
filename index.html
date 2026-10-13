@@ -12,6 +12,9 @@
 </head>
 <body>
 
+  <!-- Skip Link para acessibilidade por teclado -->
+  <a href="#main-content" class="skip-link">Pular para conteúdo principal</a>
+
   <!-- Tela de Login -->
   <div id="page-login" role="main" aria-label="Tela de login do sistema HidroChamado">
     <div class="login-card">
@@ -97,7 +100,6 @@
 
     <!-- Conteúdo Principal -->
     <main class="main-content" id="main-content" role="main">
-
       <!-- ===== DASHBOARD ===== -->
       <section class="page-section active" id="page-dashboard" aria-label="Painel principal">
         <div class="topbar">
@@ -175,17 +177,6 @@
                 </select>
               </div>
             </div>
-            <div class="form-row">
-  <div class="form-group">
-    <label for="ch-bairro">Bairro (auto)</label>
-    <input id="ch-bairro" class="form-input" type="text" placeholder="Preenchido automaticamente pelo CEP" readonly aria-label="Bairro preenchido automaticamente">
-  </div>
-
-  <div class="form-group">
-    <label for="ch-city">Cidade (auto)</label>
-    <input id="ch-city" class="form-input" type="text" placeholder="Preenchido automaticamente pelo CEP" readonly aria-label="Cidade preenchida automaticamente">
-  </div>
-</div>
 
             <div class="form-group">
               <label for="ch-descricao">Descrição Detalhada</label>
@@ -208,6 +199,10 @@
               <label for="ch-solicitante">Solicitante</label>
               <select id="ch-solicitante" class="form-input" required aria-required="true"></select>
             </div>
+
+            <!-- Campos hidden preenchidos automaticamente pela API ViaCEP -->
+            <input type="hidden" id="ch-cidade" name="cidade">
+            <input type="hidden" id="ch-bairro" name="bairro">
 
             <button type="submit" class="btn btn-accent" aria-label="Enviar novo chamado">
               <i class="fas fa-paper-plane" aria-hidden="true"></i> Abrir Chamado
