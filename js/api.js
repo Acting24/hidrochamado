@@ -1,7 +1,7 @@
 // URL relativa — funciona tanto em localhost quanto no preview HTTPS
 // (evita erro de Mixed Content quando a página é servida via HTTPS)
 // URL da API apontando para o backend na porta 3000
-const API_URL = 'http://localhost:3000/api';
+const API_URL = '/api';
 
 class APIService {
   constructor() {
