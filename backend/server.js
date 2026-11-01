@@ -16,7 +16,7 @@ const __dirname = path.dirname(fileURLToPath(import.meta.url));
 dotenv.config();
 
 const app = express();
-const PORT = process.env.PORT || 3000;
+const PORT = parseInt(process.env.PORT, 10) || 3000;
 
 // Middleware de segurança
 // Desabilita CSP do helmet para permitir CDN de CSS/JS (Tailwind, Chart.js, etc.)
@@ -74,7 +74,7 @@ app.use((err, req, res, next) => {
 async function start() {
   try {
     await connectDatabase();
-    app.listen(PORT, () => {
+    app.listen(PORT, '0.0.0.0', () => {
       console.log(`✅ Servidor rodando na porta ${PORT}`);
     });
   } catch (error) {
