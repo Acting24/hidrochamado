@@ -70,47 +70,39 @@ app.use((err, req, res, next) => {
 });
 
 // Iniciar servidor
+// Iniciar servidor
 async function start() {
-  await connectDatabase();
-  app.listen(PORT, () => {
-    console.log(`🚀 Servidor HidroChamado rodando em http://localhost:${PORT}`);
-    console.log(`📡 Ambiente: ${process.env.NODE_ENV || 'development'}`);
-    console.log(`💾 Banco de dados: ${process.env.DB_TYPE || 'sqlite'}`);
-  });
-
-  // Keep-alive para garantir que o event loop do Node nunca fique vazio,
-  // evitando encerramento inesperado quando usado com WASM (sql.js) e shell.
-  // NÃO usar .unref() aqui - queremos que este timer mantenha o processo vivo.
-  const keepAlive = setInterval(() => {
-    // no-op, apenas mantém o Node vivo
-  }, 30000);
-
-  // Captura sinais para fechar o banco graciosamente
-  process.on('SIGTERM', async () => {
-    console.log('SIGTERM recebido, fechando...');
-    clearInterval(keepAlive);
-    await pool.end();
-    process.exit(0);
-  });
-  process.on('SIGINT', async () => {
-    console.log('SIGINT recebido, fechando...');
-    clearInterval(keepAlive);
-    await pool.end();
-    process.exit(0);
-  });
-
-  // Log de exceções não capturadas para diagnóstico
-  process.on('uncaughtException', (err) => {
-    console.error('❌ Uncaught exception:', err);
-  });
-  process.on('unhandledRejection', (err) => {
-    console.error('❌ Unhandled rejection:', err);
-  });
+  try {
+    await connectDatabase();
+    app.listen(PORT, () => {
+      console.log(`✅ Servidor rodando na porta ${PORT}`);
+    });
+  } catch (error) {
+    console.error('❌ Erro ao iniciar servidor:', error);
+    process.exit(1);
+  }
 }
 
-start().catch(err => {
-  console.error('❌ Falha ao iniciar servidor:', err);
-  process.exit(1);
+start();
+
+// Captura sinais para fechar o processo graciosamente
+process.on('SIGTERM', () => {
+  console.log('SIGTERM recebido, fechando...');
+  process.exit(0);
+});
+
+process.on('SIGINT', () => {
+  console.log('SIGINT recebido, fechando...');
+  process.exit(0);
+});
+
+// Log de exceções não capturadas para diagnóstico
+process.on('uncaughtException', (err) => {
+  console.error('❌ Uncaught exception:', err);
+});
+
+process.on('unhandledRejection', (reason) => {
+  console.error('❌ Unhandled rejection:', reason);
 });
 
 export default app;
