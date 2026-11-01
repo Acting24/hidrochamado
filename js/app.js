@@ -427,14 +427,24 @@ async function renderUltimosChamadosPainel() {
   }
 }
 
+let chartCategoriasInstance = null;
+let chartStatusInstance = null;
+
+
 function renderChartCategorias(dados) {
   const canvas = document.getElementById('chart-categorias');
   if (!canvas || !window.Chart) return;
 
+  // 1. Destrói se já existir
+  if (chartCategoriasInstance) {
+    chartCategoriasInstance.destroy();
+  }
+
   const labels = dados.map(item => item.nome || item.categoria || 'Sem categoria');
   const values = dados.map(item => Number(item.total || 0));
 
-  new Chart(canvas, {
+  // 2. Salva a nova instância
+  chartCategoriasInstance = new Chart(canvas, {
     type: 'bar',
     data: {
       labels,
@@ -457,18 +467,26 @@ function renderChartStatus(dados) {
   const canvas = document.getElementById('chart-status');
   if (!canvas || !window.Chart) return;
 
+  // 1. Destrói o gráfico de status se ele já existir
+  if (chartStatusInstance) {
+    chartStatusInstance.destroy();
+  }
+
   const labels = dados.map(item => item.status || 'Sem status');
   const values = dados.map(item => Number(item.total || 0));
 
-  new Chart(canvas, {
+  // 2. Armazena a nova instância do gráfico de status
+  chartStatusInstance = new Chart(canvas, {
     type: 'doughnut',
     data: {
       labels,
       datasets: [{
-        label: 'Status',
         data: values,
-        backgroundColor: ['#0d6efd', '#198754', '#ffc107', '#dc3545']
+        backgroundColor: ['#0d6efd', '#ffc107', '#198754']
       }]
+    },
+    options: {
+      responsive: true
     }
   });
 }
