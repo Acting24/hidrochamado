@@ -435,15 +435,15 @@ function renderChartCategorias(dados) {
   const canvas = document.getElementById('chart-categorias');
   if (!canvas || !window.Chart) return;
 
-  // 1. Destrói se já existir
-  if (chartCategoriasInstance) {
-    chartCategoriasInstance.destroy();
+  // Destrói qualquer gráfico associado a este canvas diretamente pelo Chart.js
+  const existingChart = Chart.getChart(canvas);
+  if (existingChart) {
+    existingChart.destroy();
   }
 
   const labels = dados.map(item => item.nome || item.categoria || 'Sem categoria');
   const values = dados.map(item => Number(item.total || 0));
 
-  // 2. Salva a nova instância
   chartCategoriasInstance = new Chart(canvas, {
     type: 'bar',
     data: {
@@ -467,15 +467,15 @@ function renderChartStatus(dados) {
   const canvas = document.getElementById('chart-status');
   if (!canvas || !window.Chart) return;
 
-  // 1. Destrói o gráfico de status se ele já existir
-  if (chartStatusInstance) {
-    chartStatusInstance.destroy();
+  // Destrói qualquer gráfico associado a este canvas diretamente pelo Chart.js
+  const existingChart = Chart.getChart(canvas);
+  if (existingChart) {
+    existingChart.destroy();
   }
 
   const labels = dados.map(item => item.status || 'Sem status');
   const values = dados.map(item => Number(item.total || 0));
 
-  // 2. Armazena a nova instância do gráfico de status
   chartStatusInstance = new Chart(canvas, {
     type: 'doughnut',
     data: {
