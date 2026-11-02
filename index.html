@@ -379,47 +379,87 @@
       </section>
 
       <!-- ===== ADMIN ===== -->
-      <section class="page-section" id="page-admin" aria-label="Administração do sistema">
-        <div class="topbar">
-          <h1>Administração</h1>
-        </div>
+  <section class="page-section" id="page-admin" aria-label="Administração do sistema">
+    <div class="topbar">
+      <h1>Administração</h1>
+    </div>
 
-        <div class="form-card" style="max-width:100%;">
-          <h3>Categorias do Sistema</h3>
-          <div style="overflow-x:auto;">
-            <table class="data-table" id="table-categorias" aria-label="Tabela de categorias">
-              <thead>
-                <tr>
-                  <th>ID</th>
-                  <th>Nome</th>
-                  <th>SLA (horas)</th>
-                  <th>Status</th>
-                </tr>
-              </thead>
-              <tbody></tbody>
-            </table>
-          </div>
-        </div>
+    <div class="form-card" style="max-width:100%;">
+      <h3>Categorias do Sistema</h3>
+      <div style="overflow-x:auto;">
+        <table class="data-table" id="table-categorias" aria-label="Tabela de categorias">
+          <thead>
+            <tr>
+              <th>ID</th>
+              <th>Nome</th>
+              <th>SLA (horas)</th>
+              <th>Status</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>1</td>
+              <td>Vazamento de Água</td>
+              <td>24h</td>
+              <td><span style="background:#198754; color:#fff; padding:2px 8px; border-radius:4px; font-size:12px;">Ativo</span></td>
+            </tr>
+            <tr>
+              <td>2</td>
+              <td>Bueiro / Esgoto</td>
+              <td>48h</td>
+              <td><span style="background:#198754; color:#fff; padding:2px 8px; border-radius:4px; font-size:12px;">Ativo</span></td>
+            </tr>
+            <tr>
+              <td>3</td>
+              <td>Manutenção de Redes</td>
+              <td>12h</td>
+              <td><span style="background:#198754; color:#fff; padding:2px 8px; border-radius:4px; font-size:12px;">Ativo</span></td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
 
-        <div class="form-card" style="max-width:100%;margin-top:20px;">
-          <h3>Usuários do Sistema</h3>
-          <div style="overflow-x:auto;">
-            <table class="data-table" id="table-usuarios" aria-label="Tabela de usuários">
-              <thead>
-                <tr>
-                  <th>ID</th>
-                  <th>Username</th>
-                  <th>Nome</th>
-                  <th>Perfil</th>
-                  <th>Departamento</th>
-                </tr>
-              </thead>
-              <tbody></tbody>
-            </table>
-          </div>
-        </div>
-      </section>
-
+    <div class="form-card" style="max-width:100%;margin-top:20px;">
+      <h3>Usuários do Sistema</h3>
+      <div style="overflow-x:auto;">
+        <table class="data-table" id="table-usuarios" aria-label="Tabela de usuários">
+          <thead>
+            <tr>
+              <th>ID</th>
+              <th>Username</th>
+              <th>Nome</th>
+              <th>Perfil</th>
+              <th>Departamento</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>1</td>
+              <td>admin@sabesp.com.br</td>
+              <td>Administrador SABESP</td>
+              <td>Admin</td>
+              <td>Atendimento Geral</td>
+            </tr>
+            <tr>
+              <td>2</td>
+              <td>carlos@sabesp.com.br</td>
+              <td>Carlos Silva</td>
+              <td>Agente</td>
+              <td>Manutenção Externa</td>
+            </tr>
+            <tr>
+              <td>3</td>
+              <td>joao@test.com.br</td>
+              <td>João Pedro</td>
+              <td>Solicitante</td>
+              <td>Cidadão</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </section>
     </main>
   </div>
 
